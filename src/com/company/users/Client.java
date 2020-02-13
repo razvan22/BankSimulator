@@ -7,7 +7,7 @@ public class Client extends Person{
     private Account account;
     private UserType userType;
 
-    public Client(String firstName, String lasName, String address, int socialSecurityNumber, int emailAddress, int phoneNumber, Account account, UserType userType) {
+    public Client(String firstName, String lasName, String address, int socialSecurityNumber, String emailAddress, int phoneNumber, Account account, UserType userType) {
         super(firstName, lasName, address, socialSecurityNumber, emailAddress, phoneNumber);
         this.account = account;
         this.userType = userType;
@@ -34,7 +34,7 @@ public class Client extends Person{
     }
 
     @Override
-    public int getEmailAddress() {
+    public String getEmailAddress() {
         return super.getEmailAddress();
     }
 

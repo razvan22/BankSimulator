@@ -4,7 +4,7 @@ public class Teller extends Person {
     public int dateOfEmployment;
 
 
-    public Teller(String firstName, String lasName, String address, int socialSecurityNumber, int emailAddress, int phoneNumber) {
+    public Teller(String firstName, String lasName, String address, int socialSecurityNumber, String emailAddress, int phoneNumber) {
         super(firstName, lasName, address, socialSecurityNumber, emailAddress, phoneNumber);
     }
 
@@ -29,7 +29,7 @@ public class Teller extends Person {
     }
 
     @Override
-    public int getEmailAddress() {
+    public String getEmailAddress() {
         return super.getEmailAddress();
     }
 

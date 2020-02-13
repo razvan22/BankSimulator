@@ -5,10 +5,10 @@ public abstract class Person {
     private String lasName;
     private String address;
     private int socialSecurityNumber;
-    private int emailAddress;
+    private String emailAddress;
     private int phoneNumber;
 
-    public Person(String firstName, String lasName, String address, int socialSecurityNumber, int emailAddress, int phoneNumber) {
+    public Person(String firstName, String lasName, String address, int socialSecurityNumber, String emailAddress, int phoneNumber) {
         this.firstName = firstName;
         this.lasName = lasName;
         this.address = address;
@@ -33,7 +33,7 @@ public abstract class Person {
         return socialSecurityNumber;
     }
 
-    public int getEmailAddress() {
+    public String getEmailAddress() {
         return emailAddress;
     }
 

@@ -1,17 +1,19 @@
 package com.company.account;
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.Random;
 
 public class Account {
     private Random random = new Random();
+    private AccountType accountType ;
     private String clearing = "8403-8";
     private String accountNr = accountNrGenerator();
     private double balance = 0.0;
 
+    public Account(AccountType accountType) {
+        this.accountType = accountType;
+    }
 
-    public String accountNrGenerator(){
+    private String accountNrGenerator(){
       int nr = random.nextInt(9);
       String accountNr = "";
 
@@ -21,16 +23,24 @@ public class Account {
               accountNr+= " ";
           }
           accountNr += Integer.toString(nr);
-          System.out.println(accountNr);
       }
       return accountNr;
     }
 
+    public AccountType getAccountType() {
+        return accountType;
+    }
 
-}
-class Test{
-    public static void main(String[] args) {
-        Account account = new Account();
-       account.accountNrGenerator();
+    public String getClearing() {
+        return clearing;
+    }
+
+    public String getAccountNr() {
+        return accountNr;
+    }
+
+    public double getBalance() {
+        return balance;
     }
 }
+
