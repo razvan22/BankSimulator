@@ -1,16 +1,16 @@
 package com.company.account;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Account {
+public class Account implements Serializable {
     private Random random = new Random();
-    private AccountType accountType ;
-    private String clearing = "8403-8";
-    private String accountNr = accountNrGenerator();
+    private AccountType type = AccountType.PRIVATE;
+    private String clearingNumber = "8403-8";
+    private String accountNumber = accountNrGenerator();
     private double balance = 0.0;
 
-    public Account(AccountType accountType) {
-        this.accountType = accountType;
+    public Account() {
     }
 
     private String accountNrGenerator(){
@@ -28,15 +28,15 @@ public class Account {
     }
 
     public AccountType getAccountType() {
-        return accountType;
+        return type;
     }
 
-    public String getClearing() {
-        return clearing;
+    public String getClearingNumber() {
+        return clearingNumber;
     }
 
-    public String getAccountNr() {
-        return accountNr;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
     public double getBalance() {

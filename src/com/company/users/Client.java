@@ -2,15 +2,15 @@ package com.company.users;
 
 import com.company.account.Account;
 
-public class Client extends Person{
+import java.io.Serializable;
 
-    private Account account;
-    private UserType userType;
+public class Client extends User implements Serializable {
 
-    public Client(String firstName, String lasName, String address, int socialSecurityNumber, String emailAddress, int phoneNumber, Account account, UserType userType) {
-        super(firstName, lasName, address, socialSecurityNumber, emailAddress, phoneNumber);
-        this.account = account;
-        this.userType = userType;
+    private Account account = new Account();
+
+    public Client(String firstName, String lasName, String address, String socialSecurityNumber, String emailAddress, String phoneNumber, String userName, String password, UserType type) {
+        super(firstName, lasName, address, socialSecurityNumber, emailAddress, phoneNumber, userName, password, type);
+
     }
 
     @Override
@@ -29,7 +29,7 @@ public class Client extends Person{
     }
 
     @Override
-    public int getSocialSecurityNumber() {
+    public String getSocialSecurityNumber() {
         return super.getSocialSecurityNumber();
     }
 
@@ -39,12 +39,22 @@ public class Client extends Person{
     }
 
     @Override
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return super.getPhoneNumber();
     }
 
-    public Account getAccount() {
-        return account;
+    @Override
+    public String getUserName() {
+        return super.getUserName();
     }
 
+    @Override
+    public String getPassword() {
+        return super.getPassword();
+    }
+
+    @Override
+    public UserType getType() {
+        return super.getType();
+    }
 }

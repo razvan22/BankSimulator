@@ -3,14 +3,19 @@ package com.company;
 import java.util.Scanner;
 
 public class UserInput {
-static Scanner input = new Scanner(System.in);
 
     public static String writeString(String messageForUser){
-        System.out.printf("%s ", messageForUser);
+    Scanner input = new Scanner(System.in);
+        System.out.print( messageForUser);
+        return input.nextLine();
+    }
+    public static String writeString(){
+        Scanner input = new Scanner(System.in);
         return input.nextLine();
     }
 
     public static int writeInt(String messageForUser){
+        Scanner input = new Scanner(System.in);
         System.out.printf("%s ",messageForUser);
         return input.nextInt();
     }

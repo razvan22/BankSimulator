@@ -1,40 +1,13 @@
 package com.company.users;
 
-public class Teller extends Person {
-    public int dateOfEmployment;
+public class Teller extends User {
+    public String dateOfEmployment;
+    private int numberOfClients;
 
 
-    public Teller(String firstName, String lasName, String address, int socialSecurityNumber, String emailAddress, int phoneNumber) {
-        super(firstName, lasName, address, socialSecurityNumber, emailAddress, phoneNumber);
-    }
-
-    @Override
-    public String getFirstName() {
-        return super.getFirstName();
-    }
-
-    @Override
-    public String getLasName() {
-        return super.getLasName();
-    }
-
-    @Override
-    public String getAddress() {
-        return super.getAddress();
-    }
-
-    @Override
-    public int getSocialSecurityNumber() {
-        return super.getSocialSecurityNumber();
-    }
-
-    @Override
-    public String getEmailAddress() {
-        return super.getEmailAddress();
-    }
-
-    @Override
-    public int getPhoneNumber() {
-        return super.getPhoneNumber();
+    public Teller(String firstName, String lasName, String address, String socialSecurityNumber, String emailAddress, String phoneNumber, String userName, String password, UserType type, String dateOfEmployment, int numberOfClients) {
+        super(firstName, lasName, address, socialSecurityNumber, emailAddress, phoneNumber, userName, password, type);
+        this.dateOfEmployment = dateOfEmployment;
+        this.numberOfClients = numberOfClients;
     }
 }
