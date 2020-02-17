@@ -1,6 +1,8 @@
 package com.company;
 
-import com.company.fileManager.FileManager;
+import com.company.account.Account;
+import com.company.databaseManager.DatabaseManager;
+import com.company.users.Admin;
 import com.company.users.Client;
 import com.company.users.UserType;
 
@@ -31,7 +33,10 @@ public class BankSimulator {
 
             switch (option){
                 case LOGIN:
-                   login();
+                 newClient();
+                break;
+                case 2:
+                    DatabaseManager.read("JavaDB/UsersData/Clients/Jon.dat");
                 break;
                 default:
                     System.out.println("Not a valid option");
@@ -42,58 +47,56 @@ public class BankSimulator {
         }
     }
 
+
     private void login() throws IOException {
-        FileManager.readUsersFilePath();
+        DatabaseManager.readUsersFilePath();
         boolean login= true;
 
         while (login){
             String userName = UserInput.writeString(ANSI_WHITE +"\n0.EXIT\nUser: ");
+
                 if (userName.equals("0")){
                     System.out.println(ANSI_GREEN+"Logging out ...");
                     break;
                 }
-                if (FileManager.usersFilesPath.containsKey(userName)){
-                    System.out.println("This is a valid user name ");
+
+                if (DatabaseManager.userNameList.containsKey(userName)){
+                    DatabaseManager.users.get(userName).getType();
+
                 }else {
                    System.out.println(ANSI_RED+"Not a valid user !!");
                 }
-
-
-
         }
     }
+
+
     private void loginMenu(){
         System.out.printf("\n\n\t\t\t\t\t\t\tJava Bank Simulator\n\n"+
-                "\t 1. Login\n\t 0. EXIT\n");
+                "\t 1. Login\n\t 2.Read \n0. EXIT\n");
     }
 
-   private void newClient(){
-       Map<String,String> client = new HashMap<String,String>();
-     UserType clientType = UserType.CLIENT;
-     Client newClient =  new Client(UserInput.writeString("First name :"),
-                UserInput.writeString("Last name: "),
-                UserInput.writeString("Address: "),
-                UserInput.writeString("Social security number: "),
-                UserInput.writeString("@mail: "),
-                UserInput.writeString("Phone number: "),
-                UserInput.writeString("User name: "),
-                UserInput.writeString("Password: "),
-                clientType);
-        client.put("First name: ",newClient.getFirstName());
-        client.put("Last name: ",newClient.getLasName());
+    private void newClient() throws IOException {
+       UserType clientType = UserType.CLIENT;
+        Account account = new Account();
+       Client client = new Client("Jon", "Asmn","VillandsVanga","678909-232",
+               "jon@.com","09878767","userJon","pass",clientType,account);
+
+       DatabaseManager.write("JavaDB/UsersData/Clients/"+client.getFirstName(),client);
+//       DatabaseManager.write("JavaDB/UsersData/Clients/"+client.getFirstName()+"account",account);
+
+    }
+
+   private void newAdmin () throws IOException {
+       Admin admin = new Admin("root","admin");
+
+       DatabaseManager.write("JavaDB/UsersData/Clients/"+admin.getUserName(),admin);
    }
 
-   private void clientTest() throws IOException {
-       UserType clientType = UserType.CLIENT;
-       Client client = new Client("Jon","Mahon","Kristianstad","73094",
-               "jon@gmail.com","898989891","jon","jonbBon",clientType);
-       FileManager.usersList.put("Jon",client);
-       FileManager.writeUsersData("JavaDB/UsersData/Clients/"+client.getUserName());
-   }
 
    private void showUsers(){
-       for (String key : FileManager.usersList.keySet()){
-           System.out.printf("First name: %s\n", FileManager.usersList.get(key).getFirstName());
+
+       for (String key : DatabaseManager.users.keySet()){
+           System.out.printf("First name: %s\n", DatabaseManager.users.get(key).getFirstName());
        }
    }
 
