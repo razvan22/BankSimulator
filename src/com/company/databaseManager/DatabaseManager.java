@@ -1,14 +1,8 @@
 package com.company.databaseManager;
 import com.company.users.User;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
+
 import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.*;
 
 public class DatabaseManager {
@@ -18,7 +12,7 @@ public class DatabaseManager {
     private static Properties properties = new Properties();
 
 
-    public static void write(String path, Object object )throws IOException {
+    public static void insert(String path, Object object )throws IOException {
         String filePath = path+".dat";
 
         try (ObjectOutputStream objectWriter = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(filePath)))) {
@@ -28,23 +22,14 @@ public class DatabaseManager {
         }
     }
 
-    public static void read(String path){
+    public static Object select(String path){
         String filePath = path;
-
+        Object currentObject = null;
         try(ObjectInputStream read = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filePath)))) {
-
             boolean eof = false;
             while(!eof) {
                 try {
-                    Object currentObject =  read.readObject();
-                    Class class0 = currentObject.getClass();
-                    Method[] methods = class0.getMethods();
-                    for (Method method : methods){
-                        if (method.getName().startsWith("get")){
-                            System.out.println(method);
-                        }
-                    }
-
+                     currentObject =  read.readObject();
                 } catch(EOFException e) {
                     eof = true;
                 }
@@ -54,7 +39,24 @@ public class DatabaseManager {
         } catch(ClassNotFoundException e) {
             System.out.println("ClassNotFoundException " + e.getMessage());
         }
+        return currentObject;
     }
+    public static void delete(String path){
+
+    }
+
+    public static void update(String path){
+
+    }
+
+    public static void replace (){
+
+    }
+
+    public static void truncate(){
+
+    }
+
 
     public static void writeUserFilesPath(String username, String usersFilePath  ) throws IOException {
         readUsersFilePath();
