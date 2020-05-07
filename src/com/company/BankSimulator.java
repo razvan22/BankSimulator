@@ -1,14 +1,14 @@
 package com.company;
 
 import com.company.account.Account;
+import com.company.account.AccountType;
 import com.company.databaseManager.DatabaseManager;
-import com.company.users.Admin;
-import com.company.users.Client;
+import com.company.employees.Admin;
+import com.company.client.Client;
 import com.company.users.User;
-import com.company.users.UserType;
+import com.company.users.UserInput;
 
 import java.io.IOException;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
@@ -41,7 +41,7 @@ public class BankSimulator {
                  newClient();
                 break;
                 case 2:
-                    displayUser(" ");
+                    displayUser("");
                 break;
                 default:
                     System.out.println("Not a valid option");
@@ -64,7 +64,7 @@ public class BankSimulator {
                     break;
                 }
                 if (DatabaseManager.userNameList.containsKey(userName)){
-                    DatabaseManager.users.get(userName).getType();
+                    DatabaseManager.users.get(userName).getUserType();
                 }else {
                    System.out.println(ANSI_RED+"Not a valid user !!");
                 }
@@ -114,17 +114,14 @@ public class BankSimulator {
                     }
     }
     private void newClient() throws IOException {
-       UserType clientType = UserType.CLIENT;
-        Account account = new Account();
-       Client client = new Client("Jon", "Asmn","VillandsVanga","678909-232",
-               "jon@.com","09878767","userJon","pass",clientType,account);
+        Account account = new Account(AccountType.PRIVATE);
+       Client client = new Client(account);
+        System.out.printf("Client name "+ client.getName());
 
-       DatabaseManager.insert(filesPath(client),client);
-       DatabaseManager.insert(filesPath(client)+"account"+account.getAccountNumber(),account);
     }
 
     private String filesPath(User user) throws IOException {
-        String fileName = user.getFirstName()+user.getLasName();
+        String fileName = user.getName()+user.getName();
         Path path = Paths.get("JavaDB/UsersData/Clients/"+fileName);
         Files.createDirectory(path);
         return path.toString()+"/"+fileName;
@@ -140,7 +137,7 @@ public class BankSimulator {
    private void showUsers(){
 
        for (String key : DatabaseManager.users.keySet()){
-           System.out.printf("First name: %s\n", DatabaseManager.users.get(key).getFirstName());
+           System.out.printf("First name: %s\n", DatabaseManager.users.get(key).getName());
        }
    }
 

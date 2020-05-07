@@ -3,35 +3,27 @@ package com.company.users;
 import java.io.Serializable;
 
 public abstract class User implements Serializable {
-    private String firstName;
-    private String lasName;
+    private String name;
     private String address;
     private String socialSecurityNumber;
     private String emailAddress;
     private String phoneNumber;
-    private String userName;
     private String password;
-    private UserType type;
+    private UserType userType;
 
 
-    public User(String firstName, String lasName, String address, String socialSecurityNumber, String emailAddress, String phoneNumber, String userName, String password, UserType type) {
-        this.firstName = firstName;
-        this.lasName = lasName;
+    public User(String name, String address, String socialSecurityNumber, String emailAddress, String phoneNumber, String password, UserType userType) {
+        this.name = name;
         this.address = address;
         this.socialSecurityNumber = socialSecurityNumber;
         this.emailAddress = emailAddress;
         this.phoneNumber = phoneNumber;
-        this.userName = userName;
         this.password = password;
-        this.type = type;
+        this.userType = userType;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLasName() {
-        return lasName;
+    public String getName() {
+        return name;
     }
 
     public String getAddress() {
@@ -50,15 +42,11 @@ public abstract class User implements Serializable {
         return phoneNumber;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
     public String getPassword() {
         return password;
     }
 
-    public UserType getType() {
-        return type;
+    public UserType getUserType() {
+        return userType;
     }
 }

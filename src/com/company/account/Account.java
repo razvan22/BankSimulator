@@ -5,15 +5,16 @@ import java.util.Random;
 
 public class Account implements Serializable {
     private Random random = new Random();
-    private AccountType type = AccountType.PRIVATE;
+    private AccountType type;
     private String clearingNumber = "8403-8";
-    private String accountNumber = accountNrGenerator();
+    private String accountNumber = accountNumberGenerator();
     private double balance = 0.0;
 
-    public Account() {
+    public Account(AccountType type) {
+        this.type = type;
     }
 
-    private String accountNrGenerator(){
+    private String accountNumberGenerator(){
       int nr = random.nextInt(9);
       String accountNr = "";
 

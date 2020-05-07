@@ -2,8 +2,7 @@ package com.company.users;
 
 public enum UserType {
     CLIENT("Client"),
-    TELLER("Teller"),
-    ADMIN("Admin");
+    BANK_EMPLOYEE("Bank Employee");
     private final String type;
 
     UserType(String type) {
