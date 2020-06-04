@@ -2,9 +2,8 @@ package com.company;
 
 import com.company.account.Account;
 import com.company.account.AccountType;
-import com.company.databaseManager.DatabaseManager;
-import com.company.employees.Admin;
 import com.company.client.Client;
+import com.company.databaseManager.DatabaseManager;
 import com.company.users.User;
 import com.company.users.UserInput;
 
@@ -117,7 +116,6 @@ public class BankSimulator {
         Account account = new Account(AccountType.PRIVATE);
        Client client = new Client(account);
         System.out.printf("Client name "+ client.getName());
-
     }
 
     private String filesPath(User user) throws IOException {
@@ -126,12 +124,6 @@ public class BankSimulator {
         Files.createDirectory(path);
         return path.toString()+"/"+fileName;
     }
-
-   private void newAdmin () throws IOException {
-       Admin admin = new Admin("root","admin");
-
-       DatabaseManager.insert("JavaDB/UsersData/Clients/"+admin.getUserName(),admin);
-   }
 
 
    private void showUsers(){
