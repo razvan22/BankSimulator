@@ -1,6 +1,7 @@
 package com.company.account;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Account implements Serializable {
@@ -9,23 +10,24 @@ public class Account implements Serializable {
     private String clearingNumber = "8403-8";
     private String accountNumber = accountNumberGenerator();
     private double balance = 0.0;
+    ArrayList<Transaction> transactions = new ArrayList<>();
 
     public Account(AccountType type) {
         this.type = type;
     }
 
-    private String accountNumberGenerator(){
-      int nr = random.nextInt(9);
-      String accountNr = "";
+    private String accountNumberGenerator() {
+        int nr = random.nextInt(9);
+        String accountNr = "";
 
-      for (int i = 0; i<9; i++){
-          nr = random.nextInt(9);
-          if ((i%3)== 0){
-              accountNr+= " ";
-          }
-          accountNr += Integer.toString(nr);
-      }
-      return accountNr;
+        for (int i = 0; i < 9; i++) {
+            nr = random.nextInt(9);
+            if ((i % 3) == 0) {
+                accountNr += " ";
+            }
+            accountNr += Integer.toString(nr);
+        }
+        return accountNr;
     }
 
     public AccountType getAccountType() {
@@ -42,6 +44,39 @@ public class Account implements Serializable {
 
     public double getBalance() {
         return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void showBalance() {
+        System.out.printf("Your current balance is : %s kr %n", getBalance());
+    }
+
+    private void displayTransaction(Transaction transaction) {
+        System.out.printf("\n %s  %s  %s", transaction.getReceiver(), transaction.getDate(), transaction.getAmount());
+    }
+
+    public void displayTransactions(){
+        transactions.stream()
+                .forEach(this::displayTransaction);
+    }
+
+    public void saveTransaction(Transaction transaction) {
+        transactions.add(transaction);
+    }
+
+    public void withdrawalAmount(Double amount) {
+        if ((getBalance() - amount) < 0.0) {
+            System.out.printf("Insufficient funds , your current balance is %s", getBalance());
+        } else {
+            setBalance(getBalance() - amount);
+        }
+    }
+
+    public void depositAmount(Double amount) {
+
     }
 }
 

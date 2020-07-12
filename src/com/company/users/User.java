@@ -2,7 +2,7 @@ package com.company.users;
 
 import java.io.Serializable;
 
-public abstract class User implements Serializable {
+public abstract class User implements Serializable, IUsersUtilities {
     private String name;
     private String address;
     private String socialSecurityNumber;
@@ -48,5 +48,21 @@ public abstract class User implements Serializable {
 
     public UserType getUserType() {
         return userType;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -1,2 +1,0 @@
-#Sun Feb 16 18:15:54 CET 2020
-jon=JavaDB/UsersData/Clients/jon.dat
