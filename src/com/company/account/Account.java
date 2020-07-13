@@ -1,8 +1,12 @@
 package com.company.account;
 
+import com.company.client.Client;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static com.company.BankSimulatorUtilities.currentDateAsString;
 
 public class Account implements Serializable {
     private Random random = new Random();
@@ -55,16 +59,24 @@ public class Account implements Serializable {
     }
 
     private void displayTransaction(Transaction transaction) {
-        System.out.printf("\n %s  %s  %s", transaction.getReceiver(), transaction.getDate(), transaction.getAmount());
+        System.out.printf("\n  %s  %s  %s kr %s", transaction.getReceiver(), transaction.getDate(), transaction.getAmount(), transaction.getAction().getAction());
     }
 
-    public void displayTransactions(){
+    public void displayTransactions() {
         transactions.stream()
                 .forEach(this::displayTransaction);
+        System.out.println("\n");
     }
 
     public void saveTransaction(Transaction transaction) {
         transactions.add(transaction);
+    }
+
+    public void registerTransaction(String senderName, Client receiver, Double amount) {
+        Transaction senderTransaction = new Transaction(amount, currentDateAsString(), receiver.getName(), TransactionAction.SENT);
+        saveTransaction(senderTransaction);
+        Transaction receiverTransaction = new Transaction(amount, currentDateAsString(), senderName, TransactionAction.RECEIVED);
+        receiver.getAccount().saveTransaction(receiverTransaction);
     }
 
     public void withdrawalAmount(Double amount) {
@@ -76,7 +88,7 @@ public class Account implements Serializable {
     }
 
     public void depositAmount(Double amount) {
-
+        setBalance(getBalance() + amount);
     }
 }
 

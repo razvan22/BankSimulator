@@ -23,9 +23,11 @@ public class BankSimulatorUtilities {
         return UserInput.getString();
     }
 
-    protected static String currentDateAsString(){
+    public static String currentDateAsString(){
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("HH:mm MM.dd.yyyy ");
         return dateFormat.format(date);
     }
+
+
 }

@@ -1,41 +1,31 @@
 package com.company;
 
-
 import com.company.client.Client;
-import com.company.databaseManager.DatabaseSimulator;
-import com.company.employees.Admin;
-import com.company.employees.BankEmployee;
 import com.company.users.User;
 import com.company.utilities.PathsUtilities;
-import com.company.utilities.UserInput;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.function.Predicate;
 
-import static com.company.BankSimulatorUtilities.askForEmail;
+import static com.company.BankSimulatorUtilities.*;
 import static com.company.databaseManager.DatabaseSimulator.*;
+import static com.company.utilities.UserInput.getInt;
 
 
 public class BankSimulator {
-
     private final int LOGIN = 1;
-
-    Client currentLoggedClient;
-    BankEmployee currentLoggedEmployee ;
-    Admin currentLoggedAdmin ;
-
 
     public BankSimulator() {
         loadAllObjects(PathsUtilities.dbFilesPaths());
+        usersList.stream()
+                .map(user -> (Client) user)
+                .map(client -> client.getAccount().getAccountNumber())
+                .forEach(System.out::println);
 
         int option = -1;
-        BankSimulatorUtilities.loginMenu();
-        option = UserInput.getInt();
+        loginMenu();
+        option = getInt();
         while (option != 0) {
-
             switch (option) {
                 case LOGIN:
                     login();
@@ -43,96 +33,28 @@ public class BankSimulator {
                 default:
                     System.out.println("Not a valid option");
             }
-           BankSimulatorUtilities.loginMenu();
-            option = UserInput.getInt();
+           loginMenu();
+            option = getInt();
         }
     }
 
     private void login(){
         String email = askForEmail();
+        String userPassword = askForPassword();
         if (isEmailValid(email)){
             Object currentUser = getUserByEmail(email);
-            showUserMenu(currentUser);
-            writeObject(PathsUtilities.generatePath((User) currentUser),currentUser);
-
-
-//            getUserByEmail(email);
-//            switch (loggedUserType){
-//                case "CLIENT":
-//                String password = askForPassword();
-//                    while (password != "0"){
-//                        if (validateCredentials(email, askForPassword())){
-//                            System.out.println("\nWelcome "+currentLoggedClient.getName());
-//                        }
-//                    }
-//                    break;
-//                case "EMPLOYEE":
-//                    if (validateCredentials(email, askForPassword())) {
-//                        System.out.println("\nWelcome " + currentLoggedEmployee.getName());
-//                    }
-//                    break;
-//                case "ADMIN":
-//
-//                    break;
-//            }
-
-        } else {
-            System.out.println("No user with " + email +" was found !!");
-        }
-    }
-
-
-
-
-
-    private boolean validateCredentials(String email, String password){
-        switch (email){
-            case "CLIENT":
-                if (currentLoggedClient.getEmailAddress().equals(email) && currentLoggedClient.getPassword().equals(password)){
-                    return true;
-                }
-                break;
-            case "EMPLOYEE":
-                if (currentLoggedEmployee.getEmailAddress().equals(email) && currentLoggedEmployee.getPassword().equals(password)){
-                    return true;
-                }
-                break;
-            case "ADMIN":
-                if (currentLoggedAdmin.getEmailAddress().equals(email) && currentLoggedAdmin.getPassword().equals(password)){
-                    return true;
-                }
-                break;
-        }
-        return false;
-    }
-
-    private boolean isEmailValid(String email){
-        Predicate<User> isValidEmail = u -> u.getEmailAddress().equals(email);
-        boolean match = false;
-        if (!match){
-         match = usersList.stream()
-                 .map(u -> (User) u)
-                 .anyMatch(isValidEmail);
-        }
-        return match;
-    }
-
-    private void loadAllObjects(File @NotNull [] files) {
-        for (File file : files) {
-            if (file.isDirectory()) {
-                loadAllObjects(file.listFiles());
-            } else {
-                usersList.add( DatabaseSimulator.readObjectFromFile(file.getPath()));
-
+            if (!userPassword.equals(getUserPassword(currentUser))){
+                System.out.println("Wrong email or password!!");
             }
+            if (userPassword.equals(getUserPassword(currentUser))){
+                showUserMenu(currentUser);
+                writeObject(PathsUtilities.generatePath((User) currentUser),currentUser);
+            }
+        } else {
+            System.out.println("Wrong email or password!!");
         }
     }
-//    private void getUserByEmail(String email){
-//        if (DatabaseSimulator.getEmployeeByEmail(email) != null){
-//            currentLoggedEmployee = DatabaseSimulator.getEmployeeByEmail(email);
-//            loggedUserType = currentLoggedEmployee.getUserType().toString();
-//        }
-//    }
+
     private void showUserMenu(Object currentUser){
         try {
             Method[] methods = currentUser.getClass().getMethods();
@@ -141,6 +63,19 @@ public class BankSimulator {
 
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e){
             e.printStackTrace();
+        }
+    }
+
+    private String getUserPassword(Object currentUser){
+        try {
+            Method[] methods = currentUser.getClass().getMethods();
+            Method method = currentUser.getClass().getMethod("getPassword", null);
+            Object object = method.invoke(currentUser);
+            return object.toString();
+
+        }catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e){
+            e.printStackTrace();
+            return null;
         }
     }
 }

@@ -1,14 +1,22 @@
 package com.company.account;
 
-public class Transaction {
+import java.io.Serializable;
+
+public class Transaction implements Serializable {
    private double amount;
    private String date;
    private String receiver;
+    private TransactionAction action;
 
-    public Transaction(double amount, String date, String receiver) {
+    public Transaction(double amount, String date, String receiver, TransactionAction action) {
         this.amount = amount;
         this.date = date;
         this.receiver = receiver;
+        this.action = action;
+    }
+
+    public TransactionAction getAction() {
+        return action;
     }
 
     public double getAmount() {

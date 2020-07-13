@@ -38,4 +38,12 @@ public class UserInput {
         }
     }
 
+    public static boolean confirm(){
+        System.out.print("Press 'Y' to confirm or 'N' to cancel:");
+        if (getString().toLowerCase().equals("y")){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

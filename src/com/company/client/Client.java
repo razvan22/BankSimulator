@@ -2,12 +2,15 @@ package com.company.client;
 
 import com.company.account.Account;
 import com.company.account.AccountType;
+import com.company.databaseManager.DatabaseSimulator;
 import com.company.users.User;
 import com.company.users.UserType;
+import com.company.utilities.PathsUtilities;
 
 import java.io.Serializable;
+import java.util.Scanner;
 
-import static com.company.databaseManager.DatabaseSimulator.isAccountNumberValid;
+import static com.company.databaseManager.DatabaseSimulator.*;
 import static com.company.utilities.UserInput.*;
 
 public class Client extends User implements Serializable {
@@ -15,7 +18,7 @@ public class Client extends User implements Serializable {
     private Account account = new Account(AccountType.PRIVATE) ;
 
     public Client(){
-        this("Razvan-Petru", "Villands Vanga", "8906155356","razviy69@mail.com", "8906155356", "secret");
+        this("Razvan Petru", "Villands Vanga", "8906155356","razvan@.com", "0720431428", "password");
     }
 
     public Client(String name, String address, String socialSecurityNumber, String emailAddress, String phoneNumber, String password) {
@@ -34,14 +37,14 @@ public class Client extends User implements Serializable {
                 "0. Logout");
     }
 
-
-    private void showUserData(){
-        System.out.printf("%n%s \t%s%s %n",getName(), account.getClearingNumber(), account.getAccountNumber());
+    private void showUserInformation(){
+        System.out.printf("%n\t\tWelcome %s\tbalance: %s kr%n%n %s\t account nr: %s%s%n %s\t\t %s%n %s\t\t %s%n ",getName(),account.getBalance(),getName(),
+                account.getClearingNumber(), account.getAccountNumber(),getSocialSecurityNumber(),getAddress(),getPhoneNumber(),getEmailAddress());
     }
 
     @Override
     public void displayMenu() {
-        showUserData();
+        showUserInformation();
         boolean run = true;
         while (run){
             showOptions();
@@ -68,15 +71,36 @@ public class Client extends User implements Serializable {
     }
 
     private void transfer(){
-        System.out.println("Write receiver account number:");
-        String receiverAccountNumber = getString();
-        if (isAccountNumberValid(receiverAccountNumber)){
-            System.out.println("Write amount :");
-            double amount = getDouble();
+        boolean run = true;
+        while (run) {
+            System.out.print("0. Back to menu.\nWrite receiver account number:");
+            Scanner scanner = new Scanner(System.in);
+            String receiverAccountNumber = scanner.nextLine();
+            switch (receiverAccountNumber){
+                case "0":
+                    run = false;
+                    break;
+                default:
+                    if (isAccountNumberValid(receiverAccountNumber)){
+                        Client receiver = getUserByAccountNumber(receiverAccountNumber);
+                        System.out.printf("Receiver is : %s with account number %s \n",receiver.getName(),receiver.account.getAccountNumber());
+                        System.out.print("Write amount: ");
+                        double amount = getDouble();
+                        System.out.printf("You will transfer %s kr to the account with number %s%n",amount,receiver.account.getAccountNumber());
+                        if (confirm()){
+                            account.withdrawalAmount(amount);
+                            receiver.account.depositAmount(amount);
+                            account.registerTransaction(getName(),receiver,amount);
+                            writeObject(PathsUtilities.generatePath(receiver),receiver);
+                            System.out.println("\nTransfer successful !!\n");
+                            run = false;
+                        }else run = false;
+                    }else {
+                        System.out.printf("\nThe account number %s is not valid!\n",receiverAccountNumber);
+                    }
 
+            }
 
-        }else {
-            System.out.printf("The account number %s is not a valid!",receiverAccountNumber);
         }
     }
 
@@ -105,6 +129,9 @@ public class Client extends User implements Serializable {
                     System.out.println("Write your new password: ");
                     setPassword(getString());
                     break;
+                case 5:
+                    account.depositAmount(500.0);
+                    break;
                 case 0:
                     run = false;
                     break;
@@ -116,7 +143,6 @@ public class Client extends User implements Serializable {
 class Test {
     public static void main(String[] args) {
         Client client = new Client();
-        client.displayMenu();
-
+        DatabaseSimulator.writeObject(PathsUtilities.generatePath(client),client);
     }
 }
